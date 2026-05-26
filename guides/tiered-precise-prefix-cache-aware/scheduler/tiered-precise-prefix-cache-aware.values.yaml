@@ -7,10 +7,12 @@
 
 inferenceExtension:
   image:
-    name: llm-d-inference-scheduler
     hub: ghcr.io/llm-d
-    tag: v0.8.0
-    pullPolicy: IfNotPresent
+    name: llm-d-router-endpoint-picker-dev
+    registry: ghcr.io
+    repository: llm-d/llm-d-router-endpoint-picker-dev
+    tag: main
+    pullPolicy: Always
 
   replicas: 2
 
