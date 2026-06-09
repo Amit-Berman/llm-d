@@ -7,10 +7,8 @@
 
 inferenceExtension:
   image:
-    hub: ghcr.io/llm-d
-    name: llm-d-router-endpoint-picker-dev
-    registry: ghcr.io
-    repository: llm-d/llm-d-router-endpoint-picker-dev
+    registry: ghcr.io/llm-d
+    repository: llm-d-router-endpoint-picker-dev  
     tag: main
     pullPolicy: Always
 

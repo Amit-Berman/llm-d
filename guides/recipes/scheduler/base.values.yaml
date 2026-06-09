@@ -13,7 +13,7 @@ inferenceExtension:
     tag: v0.8.0
 
   flags:
-    v: 2
+    v: 4
 
   failureMode: "FailOpen"
 
