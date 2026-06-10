@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: decode
 spec:
-  replicas: 8
+  replicas: 0
   template:
     spec:
       containers:
@@ -16,11 +16,29 @@ spec:
             - "--tensor-parallel-size=2"
             - "--mm-processor-cache-gb"
             - "20"
+            - "--block-size=64"
+            - "--kv-events-config"
+            - '{"enable_kv_cache_events":true,"publisher":"zmq","endpoint":"$(KV_EVENTS_ENDPOINT)","topic":"kv@$(POD_IP):$(POD_PORT)@Qwen/Qwen3-VL-32B-Instruct"}'
 
             # Uncomment for distributed tracing
             # - "--otlp-traces-endpoint=http://otel-collector:4317"
             # - "--collect-detailed-traces=all"
-          # env:
+          ports:
+            # Exposed so each router replica can dial the per-pod ZMQ
+            # socket bound by vLLM (KV_EVENTS_ENDPOINT=tcp://*:5556).
+            - containerPort: 5556
+              name: kv-events
+              protocol: TCP
+
+          env:
+          - name: KV_EVENTS_ENDPOINT
+            value: "tcp://*:5556"
+          - name: POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: POD_PORT
+            value: "8000"
           #   # Uncomment for distributed tracing env vars
           #   - name: OTEL_SERVICE_NAME
           #     value: "vllm-decode"

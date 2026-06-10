@@ -33,18 +33,18 @@ workload:                         # yaml configuration for harness workload(s)
       interval: 60.0
       stages:
         # Warmup — seat residents (~1×S)
-        - rate: 5
-          duration: 600            # 5*600  = 3000
+        #- rate: 5
+         # duration: 600            # 5*600  = 3000
 
         # Main ladder
-        - rate: 5
-          duration: 100
-        - rate: 10
-          duration: 100
-        - rate: 15
-          duration: 100
+        #- rate: 5
+         # duration: 100
+        #- rate: 10
+         # duration: 100
+        #- rate: 15
+         # duration: 100
         - rate: 20
-          duration: 100
+          duration: 150              # 20*150  = 3000
         - rate: 25
           duration: 100
         - rate: 30
