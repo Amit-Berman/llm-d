@@ -3,9 +3,20 @@ kind: Deployment
 metadata:
   name: decode
 spec:
-  replicas: 8
+  replicas: 1
   template:
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: NotIn
+                values:
+                - pokprod-b93r44s2
+                - pokprod-b93r44s0
+
       containers:
         - name: modelserver
           command: ["vllm", "serve"]

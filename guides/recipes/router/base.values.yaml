@@ -5,7 +5,7 @@ router:
   epp:
     replicas: 1
     flags:
-      v: 2
+      v: 4
     pluginsConfigFile: "default-plugins.yaml"
     resources:
       requests:
