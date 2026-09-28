@@ -22,6 +22,11 @@
 
 router:
   epp:
+  image: 
+      registry: ghcr.io
+      repository: amit-berman/sglang-vllm-adapter-test
+      tag: dev
+      pullPolicy: Always
     replicas: 1
     flags:
       # The chart auto-adds `--ha-enable-leader-election` when replicas > 1,
