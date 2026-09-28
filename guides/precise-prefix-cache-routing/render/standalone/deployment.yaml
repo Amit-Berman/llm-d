@@ -36,7 +36,7 @@ spec:
           imagePullPolicy: IfNotPresent
           command: ["vllm", "launch", "render"]
           args:
-            - "Qwen/Qwen3-32B" # Must match the token-producer modelName in the router values
+            - "Qwen/Qwen2.5-0.5B-Instruct" # Must match the token-producer modelName in the router values
             - "--port=8000"
           ports:
             - name: render-http

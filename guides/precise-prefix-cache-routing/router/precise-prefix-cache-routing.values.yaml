@@ -49,7 +49,7 @@ router:
               # `../render/` overlay the render call lands on the model servers
               # themselves, so a mismatch is rejected rather than silently
               # producing token IDs from the wrong tokenizer.
-              modelName: Qwen/Qwen3-32B
+              modelName: Qwen/Qwen2.5-0.5B-Instruct
               vllm:
                 # Guide render Service (../render/), not a loopback sidecar.
                 # `precise-prefix-cache-routing-` namePrefix + Service name `render`.
