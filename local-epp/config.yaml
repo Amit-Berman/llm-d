@@ -1,0 +1,58 @@
+apiVersion: llm-d.ai/v1
+kind: EndpointPickerConfig
+plugins:
+  - type: file-discovery
+    parameters:
+      path: /etc/epp/endpoints.yaml
+      watchFile: true
+  - type: token-producer
+    parameters:
+      modelName: openai/gpt-oss-120b
+      vllm:
+        url: http://host.containers.internal:8001
+  - type: endpoint-notification-source
+  - type: precise-prefix-cache-producer
+    parameters:
+      tokenProcessorConfig:
+        blockSizeTokens: 64
+      speculativeIndexing: true
+      indexerConfig:
+        kvBlockIndexConfig:
+          enableMetrics: true
+      kvEventsConfig:
+        engineType: sglang
+        topicFilter: "kv@"
+        concurrency: 8
+        discoverPods: true
+        podDiscoveryConfig:
+          socketPort: 5556
+          replaySocketPort: 5559
+  - type: inflight-load-producer
+    parameters:
+      prefixMatchInfoProducerName: precise-prefix-cache-producer
+  - type: prefix-cache-affinity-filter
+    parameters:
+      prefixMatchInfoProducerName: precise-prefix-cache-producer
+      peakPrefillThroughput: 15926
+  - type: token-load-scorer
+  - type: metrics-data-source
+  - type: core-metrics-extractor
+    parameters:
+      defaultEngine: sglang
+dataLayer:
+  injectDefaults: false
+  discovery:
+    endpoints:
+      pluginRef: file-discovery
+  sources:
+    - pluginRef: metrics-data-source
+      extractors:
+        - pluginRef: core-metrics-extractor
+    - pluginRef: endpoint-notification-source
+      extractors:
+        - pluginRef: precise-prefix-cache-producer
+schedulingProfiles:
+  - name: default
+    plugins:
+      - pluginRef: prefix-cache-affinity-filter
+      - pluginRef: token-load-scorer
